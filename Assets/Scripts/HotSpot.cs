@@ -6,8 +6,6 @@ using UnityEngine.EventSystems;
 
 public class HotSpot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler  {
 
-    public string scene; // :)
-
     public void OnPointerClick(PointerEventData eventData)
     {
 
@@ -22,10 +20,18 @@ public class HotSpot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
     {
 
     }
-    public void GobBack()
-    {
-        //singelton.current.LoadScene(scene);
+
+    public void LoadAScene(string name){
+        if(WorldManager.current)
+        WorldManager.current.LoadOtherSceneSingleton(name);
     }
 
-  
+    public void UnLoadAScene(string name)
+    {
+      //  Debug.Log("unloading");
+        if(WorldManager.current){
+        Debug.Log("found pitbull");
+        WorldManager.current.UnloadOtherSceneSingleton(name);
+        }
+    }
 }

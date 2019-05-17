@@ -44,17 +44,13 @@ public class WorldManager : MonoBehaviour {
 			onChangeScene -= LoadOtherSceneSingleton;
 	}
 
-	private void LoadOtherSceneSingleton(string name){
-		SceneManager.UnloadSceneAsync("Start");
+	public void LoadOtherSceneSingleton(string name){
+		Debug.Log("Loading scene: "+name);
 		SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
-		//ToDo unload the loadscreen
 	}
 
-	private void LoadOtherScene(Scene scene, LoadSceneMode mode){
-		Debug.Log("Scene is : "+scene.name);
-		if(sceneToLoad != ""){
-			SceneManager.UnloadSceneAsync("Start");
-			SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
-		}
+	public void UnloadOtherSceneSingleton(string name){
+		Debug.Log("Unloading scene: "+name);
+		SceneManager.UnloadSceneAsync(name);
 	}
 }
