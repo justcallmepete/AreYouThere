@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
+using UnityEngine.Events;
 
 public class TestManager : MonoBehaviour {
 	public string sceneName;
+	public UnityEvent newEvent;
+	public Material matVideo;
+	public Material matPhoto;
+	public VideoPlayer videoPlayer;
 
 	private void Start() {
-		StartCoroutine(loadRoutine());
+	//	StartCoroutine(loadRoutine());
+		videoPlayer.loopPointReached += OnVideoFinished;
 	}
 
 	IEnumerator loadRoutine(){
@@ -22,5 +29,9 @@ public class TestManager : MonoBehaviour {
 		WorldManager.current.onChangeScene(sceneName);
 		op.completed -= SendMessageToManager;
 			}
+	}
+
+	void OnVideoFinished(VideoPlayer vid){
+		RenderSettings.skybox = matPhoto;
 	}
 }
