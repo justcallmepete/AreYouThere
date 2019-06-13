@@ -38,4 +38,4 @@ public class VideoToSky : MonoBehaviour {
 
         RenderSettings.skybox.SetTexture("_MainTex", newTex);
     }
-}
+}   

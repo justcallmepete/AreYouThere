@@ -29,6 +29,7 @@ using UnityEngine.UI;
 /// UI pointer driven by gaze input.
 /// </summary>
 public class OVRGazePointer : MonoBehaviour {
+    
     private Transform gazeIcon; //the transform that rotates according to our movement
 
     [Tooltip("Should the pointer be hidden when not over interactive objects.")]
@@ -93,7 +94,7 @@ public class OVRGazePointer : MonoBehaviour {
         {
             if (_instance == null)
             {
-                Debug.Log(string.Format("Instanciating GazePointer", 0));
+                Debug.Log(string.Format("Instanciating GazePointer", 1));
                 _instance = (OVRGazePointer)GameObject.Instantiate((OVRGazePointer)Resources.Load("Prefabs/GazePointerRing", typeof(OVRGazePointer)));
             }
             return _instance;
