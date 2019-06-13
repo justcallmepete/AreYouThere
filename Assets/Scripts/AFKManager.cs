@@ -26,6 +26,8 @@ public class AFKManager : MonoBehaviour {
 	public Material skybox, circle;
 	public GameObject holder;
 
+	public RenderTexture videoTexture;
+
 	public float fadeTime = 2f;
     public float currentAlpha { get; private set; }
 
@@ -166,5 +168,6 @@ public class AFKManager : MonoBehaviour {
 		holder.SetActive(false);
 		circle.SetColor("_Color", new Color(circle.color.r, circle.color.g, circle.color.b, 0));
 		skybox.SetFloat("_Exposure", 1);
+		videoTexture.Release();
 	}
 }
