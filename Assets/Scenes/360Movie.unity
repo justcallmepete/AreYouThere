@@ -1483,6 +1483,7 @@ GameObject:
   - component: {fileID: 774507957}
   - component: {fileID: 774507956}
   - component: {fileID: 774507958}
+  - component: {fileID: 774507959}
   m_Layer: 0
   m_Name: OVRCameraRig
   m_TagString: Untagged
@@ -1568,6 +1569,26 @@ MonoBehaviour:
   m_EventMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &774507959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 774507955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8296041418ff66b4fafb286a1ba0ad04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackingSpace: {fileID: 1728752793}
+  primaryButton: 8192
+  secondaryButton: 1024
+  excludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  raycastDistance: 500
+  activeController: 0
+  afkManager: {fileID: 1760725321}
 --- !u!224 &774507960
 RectTransform:
   m_ObjectHideFlags: 0

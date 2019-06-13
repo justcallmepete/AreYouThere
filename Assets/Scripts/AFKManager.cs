@@ -8,7 +8,8 @@ public class AFKManager : MonoBehaviour {
 
 	public delegate void VideoExperience();
 	public VideoExperience StartTheExperience;
-	public VideoExperience StopTheExperience;
+	public static event VideoExperience StoryStarted;
+	public static event VideoExperience StoryStopped;
     public GameObject exitButton;
 	public delegate void VideoPlayerPreparationDone();
 	public VideoPlayerPreparationDone OnPreparationDone;
@@ -35,10 +36,6 @@ public class AFKManager : MonoBehaviour {
 		skybox.SetFloat("_Exposure", 1);
 	}
 
-	void Start(){
-	//	StartCoroutine(HardResetApplication());
-	}
-
 	void OnEnable() {
 		StartTheExperience += DoneWithIntro;
 		OnReset += PerformReset;
@@ -47,21 +44,19 @@ public class AFKManager : MonoBehaviour {
 	private void DoneWithIntro() {
 	OVRManager.HMDMounted += HeadsetPutOn;
 	OVRManager.HMDUnmounted += HeadsetTakenOff;
-	StopTheExperience += StopAll;
 	videoPlayer.loopPointReached += OnVideoDone;
 	}
 
-		public bool isPrepared(){
-		if (videoPlayer.isPrepared){
-			return true;
-		} 
+	public bool isPrepared(){
+	if (videoPlayer.isPrepared){
+		return true;
+	} 
 		return false;
 	}
 
 	private void OnDisable() {
 	OVRManager.HMDMounted -= HeadsetPutOn;
 	OVRManager.HMDUnmounted -= HeadsetTakenOff;
-	StopTheExperience -= StopAll;
 	videoPlayer.loopPointReached -= OnVideoDone;
 	}
 
@@ -81,6 +76,7 @@ public class AFKManager : MonoBehaviour {
 	}
 
 	private IEnumerator StartExperience(){
+		StoryStarted.Invoke();
 		yield return StartCoroutine(FadeObjects(0, 1));
 		holder.SetActive(false);
 		videoPlayer.Prepare();
@@ -93,6 +89,7 @@ public class AFKManager : MonoBehaviour {
     }
 
     private IEnumerator StopExperience(){
+		StoryStopped.Invoke();
 		if(videoPlayer.isPlaying){
 			videoPlayer.Stop();
 		}
