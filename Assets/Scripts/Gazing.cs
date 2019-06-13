@@ -38,7 +38,7 @@ public class Gazing : MonoBehaviour
             //}
             timer -= Time.deltaTime;
             gameObject.GetComponentInChildren<Image>().fillAmount += Time.deltaTime / 4;
-
+            if (hit.transform.gameObject.GetComponentInChildren<Button>())
             if (timer <= 0)
             {
                 GazeTimer(hit);
