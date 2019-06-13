@@ -9,7 +9,7 @@ public class AFKManager : MonoBehaviour {
 	public delegate void VideoExperience();
 	public VideoExperience StartTheExperience;
 	public VideoExperience StopTheExperience;
-
+    public GameObject exitButton;
 	public delegate void VideoPlayerPreparationDone();
 	public VideoPlayerPreparationDone OnPreparationDone;
 	bool isprepared = false;
@@ -76,7 +76,8 @@ public class AFKManager : MonoBehaviour {
 	}
 	
 	public void StopAll(){
-		StartCoroutine(StopExperience());
+        exitButton.SetActive(false);
+        StartCoroutine(StopExperience());
 	}
 
 	private IEnumerator StartExperience(){
@@ -87,9 +88,11 @@ public class AFKManager : MonoBehaviour {
 		isprepared = false;
 		videoPlayer.Play(); 
 		StartCoroutine(Fade(0,1));
-	}
+        exitButton.SetActive(true);
 
-	private IEnumerator StopExperience(){
+    }
+
+    private IEnumerator StopExperience(){
 		if(videoPlayer.isPlaying){
 			videoPlayer.Stop();
 		}
