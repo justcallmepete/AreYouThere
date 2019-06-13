@@ -34,3 +34,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+Assets/OVRInputSelection/Meshes/TouchControllers/Models/controller_NM\.psd
+
+Assets/OVRInputSelection/Meshes/TouchControllers/Models/controller_NM\.psd\.meta
