@@ -20,6 +20,7 @@ public class AFKManager : MonoBehaviour {
 
 	[SerializeField] float waitTime;
 	public VideoPlayer videoPlayer;	
+	public ProgressManager progressManager;
 	private bool resetting;
 
 	private bool firstTimeInMenu = true;
@@ -45,6 +46,7 @@ public class AFKManager : MonoBehaviour {
 	OVRManager.HMDMounted += HeadsetPutOn;
 	OVRManager.HMDUnmounted += HeadsetTakenOff;
 	videoPlayer.loopPointReached += OnVideoDone;
+	progressManager.startding();
 	}
 
 	public bool isPrepared(){
@@ -67,6 +69,7 @@ public class AFKManager : MonoBehaviour {
 	}
 
 	public void OnVideoDone(VideoPlayer vp){
+		progressManager.ResetProgress(vp.clip.ToString());
 		StopAll();
 	}
 	
@@ -76,23 +79,25 @@ public class AFKManager : MonoBehaviour {
 	}
 
 	private IEnumerator StartExperience(){
-		StoryStarted.Invoke();
+
 		yield return StartCoroutine(FadeObjects(0, 1));
 		holder.SetActive(false);
 		videoPlayer.Prepare();
 		//yield return new WaitUntil(isPrepared);
 		isprepared = false;
-		videoPlayer.Play(); 
+		videoPlayer.Play();
+				StoryStarted.Invoke(); 
 		StartCoroutine(Fade(0,1));
         exitButton.SetActive(true);
 
     }
 
     private IEnumerator StopExperience(){
-		StoryStopped.Invoke();
+				StoryStopped.Invoke();
 		if(videoPlayer.isPlaying){
 			videoPlayer.Stop();
 		}
+
 		yield return StartCoroutine(Fade(1,0));
 		circle.SetColor("_Color", new Color(circle.color.r, circle.color.g, circle.color.b, 255));
 		holder.SetActive(true);

@@ -350,6 +350,23 @@ Transform:
   m_Father: {fileID: 1728752793}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &132184750 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1651157382029164, guid: 8995ea866d09b98409a6b453114f61fa,
+    type: 2}
+  m_PrefabInternal: {fileID: 989303514}
+--- !u!114 &132184751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 132184750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 196488f8fdf06ae4ab7619f5eadeb456, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  videoPlayer: {fileID: 1438037777}
 --- !u!1 &166088158
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,6 +1723,11 @@ Prefab:
       propertyPath: exitButton
       value: 
       objectReference: {fileID: 752226652}
+    - target: {fileID: 114455975802961204, guid: 8995ea866d09b98409a6b453114f61fa,
+        type: 2}
+      propertyPath: progressManager
+      value: 
+      objectReference: {fileID: 132184751}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8995ea866d09b98409a6b453114f61fa, type: 2}
   m_IsPrefabAsset: 0
@@ -1912,7 +1934,7 @@ VideoPlayer:
   m_RenderMode: 2
   m_AspectRatio: 2
   m_DataSource: 0
-  m_PlaybackSpeed: 1
+  m_PlaybackSpeed: 6.54
   m_AudioOutputMode: 2
   m_TargetAudioSources:
   - {fileID: 0}
