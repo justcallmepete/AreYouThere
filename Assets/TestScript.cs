@@ -14,4 +14,8 @@ public class TestScript : MonoBehaviour {
 	private void Awake() {
 		manager = GetComponent<AFKManager>();
 	}
+
+	void Start(){
+//		manager.StartTheExperience(clip);
+	}
 }

@@ -6,14 +6,19 @@ using UnityEngine.Video;
 
 public class AFKManager : MonoBehaviour {
 
-	public delegate void VideoExperience(VideoClip clip);
+	public delegate void VideoExperience();
 	public VideoExperience StartTheExperience;
-	public delegate void StopVideoExperience();
-	public StopVideoExperience StopTheExperience;
+	public VideoExperience StopTheExperience;
+
+	public delegate void VideoPlayerPreparationDone();
+	public VideoPlayerPreparationDone OnPreparationDone;
+	bool isprepared = false;
 
 	[SerializeField] float waitTime;
 	public VideoPlayer videoPlayer;	
 	private bool resetting;
+
+	private bool firstTimeInMenu = true;
 	
 	public Material skybox, circle;
 	public GameObject holder;
@@ -25,20 +30,32 @@ public class AFKManager : MonoBehaviour {
 		skybox.SetFloat("_Exposure", 1);
 	}
 
-	private void OnEnable() {
-		OVRManager.HMDMounted += HeadsetPutOn;
-		OVRManager.HMDUnmounted += HeadsetTakenOff;
-
-	StartTheExperience += SetVideo;
+	void OnEnable() {
+		StartTheExperience += DoneWithIntro;
+	}
+	
+	private void DoneWithIntro() {
+	OVRManager.HMDMounted += HeadsetPutOn;
+	OVRManager.HMDUnmounted += HeadsetTakenOff;
 	StopTheExperience += StopAll;
+	videoPlayer.loopPointReached += OnVideoDone;
+	}
 
-		videoPlayer.loopPointReached += OnVideoDone;
+		public bool isPrepared(){
+		if (videoPlayer.isPrepared){
+			return true;
+		} 
+		return false;
 	}
 
 	private void OnDisable() {
+	OVRManager.HMDMounted -= HeadsetPutOn;
+	OVRManager.HMDUnmounted -= HeadsetTakenOff;
+	StopTheExperience -= StopAll;
+	videoPlayer.loopPointReached -= OnVideoDone;
 	}
 
-	private void SetVideo(VideoClip clip){
+	public void SetVideo(VideoClip clip){
 		videoPlayer.clip = clip;
 		videoPlayer.Prepare();
 		StartCoroutine(StartExperience());
@@ -55,8 +72,11 @@ public class AFKManager : MonoBehaviour {
 	private IEnumerator StartExperience(){
 		yield return StartCoroutine(FadeObjects(0, 1));
 		holder.SetActive(false);
-		yield return StartCoroutine(Fade(0,1));
-		videoPlayer.Play();
+		videoPlayer.Prepare();
+		//yield return new WaitUntil(isPrepared);
+		isprepared = false;
+		videoPlayer.Play(); 
+		StartCoroutine(Fade(0,1));
 	}
 
 	private IEnumerator StopExperience(){
@@ -115,6 +135,9 @@ public class AFKManager : MonoBehaviour {
 	}
 
 	private void HeadsetPutOn(){
+	if(firstTimeInMenu){
+		videoPlayer.Play();
+	}
 	if(resetting){
 	Debug.Log("Stopped the reset");
 	StopAllCoroutines();
