@@ -14,6 +14,9 @@ public class AFKManager : MonoBehaviour {
 	public VideoPlayerPreparationDone OnPreparationDone;
 	bool isprepared = false;
 
+	public delegate void ResetExperience();
+	public static event ResetExperience OnReset;
+
 	[SerializeField] float waitTime;
 	public VideoPlayer videoPlayer;	
 	private bool resetting;
@@ -30,8 +33,13 @@ public class AFKManager : MonoBehaviour {
 		skybox.SetFloat("_Exposure", 1);
 	}
 
+	void Start(){
+	//	StartCoroutine(HardResetApplication());
+	}
+
 	void OnEnable() {
 		StartTheExperience += DoneWithIntro;
+		OnReset += PerformReset;
 	}
 	
 	private void DoneWithIntro() {
@@ -94,9 +102,11 @@ public class AFKManager : MonoBehaviour {
 		resetting = true;
 		// when taking off the headset wait for (amount_of_seconds)
 		yield return new WaitForSecondsRealtime(waitTime);
-		videoPlayer.Stop();
-		skybox.SetFloat("_Exposure", 1);
-		circle.SetColor("_Color", new Color(circle.color.r, circle.color.g, circle.color.b, 255));
+		OnReset.Invoke();
+		//videoPlayer.Stop();
+	//	skybox.SetFloat("_Exposure", 1);
+		//circle.SetColor("_Color", new Color(circle.color.r, circle.color.g, circle.color.b, 255));
+		
 		resetting = false;
 	}
 
@@ -147,5 +157,14 @@ public class AFKManager : MonoBehaviour {
 
 	private void HeadsetTakenOff(){
 		StartCoroutine(HardResetApplication());
+	}
+
+	private void PerformReset(){
+		if(videoPlayer.isPlaying)
+		videoPlayer.Stop();
+
+		holder.SetActive(false);
+		circle.SetColor("_Color", new Color(circle.color.r, circle.color.g, circle.color.b, 0));
+		skybox.SetFloat("_Exposure", 1);
 	}
 }

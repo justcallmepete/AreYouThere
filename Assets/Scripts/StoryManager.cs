@@ -21,9 +21,11 @@ public class StoryManager : MonoBehaviour {
 	private void OnDisable() {
 		OVRManager.HMDMounted += EquippedHeadset;
 		videoPlayer.loopPointReached += OnVideoFinished;
+		AFKManager.OnReset -= PerformReset;
 	}
 
 	private void Start() {
+		AFKManager.OnReset += PerformReset;
 			if(firstTimeInMenu){
 			videoPlayer.clip = clip;
 			videoPlayer.Prepare();
@@ -55,5 +57,11 @@ public class StoryManager : MonoBehaviour {
 			afkManager.StopAll();
 			afkManager.StartTheExperience();			
 		}
+	}
+
+	private void PerformReset(){
+		firstTimeInMenu = true;
+		videoPlayer.clip = clip;
+		videoPlayer.Prepare();
 	}
 }
