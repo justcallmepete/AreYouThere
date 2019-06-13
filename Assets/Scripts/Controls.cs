@@ -97,15 +97,18 @@ public class Controls : MonoBehaviour
         OVRInputHelpers.GetControllerForButton(OVRInput.Button.PrimaryIndexTrigger, activeController);
         Ray pointer = OVRInputHelpers.GetSelectionRay(activeController, trackingSpace);
         RaycastHit hit; // Was anything hit?
-        if (Physics.Raycast(pointer, out hit, raycastDistance, ~excludeLayers))
+
+            if (Physics.Raycast(pointer, out hit, raycastDistance, 9))
         {
-       // indicator.UpdateComponent(hit.transform.gameObject, hit);
+                gameObject.GetComponentInChildren<LineRenderer>().material.color = Color.green;
+        // indicator.UpdateComponent(hit.transform.gameObject, hit);
         if (hit.transform.GetComponent<Button>())
         {
         Button btn = hit.transform.GetComponent<Button>();
         }
     }
-    }
+        else gameObject.GetComponentInChildren<LineRenderer>().material.color = Color.red;
+        }
 
 }
 }
