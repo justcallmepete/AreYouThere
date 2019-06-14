@@ -25,17 +25,7 @@ public class Gazing : MonoBehaviour
        
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, layerMask))
         {
-            //if (scale) { 
-            //      scalingFramesLeft = 10;
-            //      scale = false;
-            //    }
-
-
-            //if (scalingFramesLeft > 0)
-            //{
-            //    hit.transform.localScale = Vector3.Lerp(hit.transform.localScale,hit.transform.localScale * 1.2f,Time.deltaTime * 10);
-            //    scalingFramesLeft--;
-            //}
+           
             timer -= Time.deltaTime;
             gameObject.GetComponentInChildren<Image>().fillAmount += Time.deltaTime / 4;
             if (hit.transform.gameObject.GetComponentInChildren<Button>())
@@ -47,7 +37,7 @@ public class Gazing : MonoBehaviour
         else
         {
             timer = 4f;
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
             gameObject.GetComponentInChildren<Image>().fillAmount = 0;
         }
 
