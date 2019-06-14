@@ -17,7 +17,7 @@ public class Controls : MonoBehaviour
     public OVRInput.Button primaryButton = OVRInput.Button.PrimaryIndexTrigger;
 
     [Tooltip("Secondary selection button")]
-    public OVRInput.Button secondaryButton = OVRInput.Button.PrimaryTouchpad;
+    public OVRInput.Button secondaryButton = OVRInput.Button.Back;
 
     [Tooltip("Layers to exclude from raycast")]
     public LayerMask excludeLayers;
@@ -47,11 +47,11 @@ public class Controls : MonoBehaviour
         
     }
 
-    private void SetExperienceBoolTrue(){
+    public void SetExperienceBoolTrue(){
             isInExperience = true;
     }
 
-    private void SetExperienceBoolFalse(){
+    public void SetExperienceBoolFalse(){
             isInExperience = false;
     }
 
@@ -83,8 +83,8 @@ public class Controls : MonoBehaviour
         
         if (Input.GetKey(KeyCode.A))
         {
-            Debug.Log("reeeeee");
             if(isInExperience){
+           // afkManager.StopAllCoroutines();
             afkManager.StopAll();
                 } else {
                     // show fadeUI that tells you not to click the button in menu

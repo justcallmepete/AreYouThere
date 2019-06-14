@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using ControllerSelection;
 using UnityEngine.Video;
 
 public class AFKManager : MonoBehaviour {
@@ -18,6 +16,8 @@ public class AFKManager : MonoBehaviour {
 	public delegate void ResetExperience();
 	public static event ResetExperience OnReset;
 
+	public bool isVideoShow;
+
 	[SerializeField] float waitTime;
 	public VideoPlayer videoPlayer;	
 	public ProgressManager progressManager;
@@ -30,11 +30,16 @@ public class AFKManager : MonoBehaviour {
 
 	public RenderTexture videoTexture;
 
+	IEnumerator cycleRoutine = null;
+
+	public float photoCycleTime = 5f;
+
 	public float fadeTime = 2f;
     public float currentAlpha { get; private set; }
 
 	void Awake() {
 		skybox.SetFloat("_Exposure", 1);
+		skybox.SetTexture("_Tex", videoTexture);
 	}
 
 	void OnEnable() {
@@ -63,9 +68,16 @@ public class AFKManager : MonoBehaviour {
 	}
 
 	public void SetVideo(VideoClip clip){
+		isVideoShow = true;
 		videoPlayer.clip = clip;
 		videoPlayer.Prepare();
 		StartCoroutine(StartExperience());
+	}
+
+	public void SetPictureShow(PhotoScriptable obj){
+			isVideoShow = false;
+		StartCoroutine(StartPhotoExperience(obj));
+		//StartCoroutine(StartPhotoExperience(obj));
 	}
 
 	public void OnVideoDone(VideoPlayer vp){
@@ -74,12 +86,25 @@ public class AFKManager : MonoBehaviour {
 	}
 	
 	public void StopAll(){
+		StopAllCoroutines();
         exitButton.SetActive(false);
         StartCoroutine(StopExperience());
 	}
 
-	private IEnumerator StartExperience(){
+	private IEnumerator StartPhotoExperience(PhotoScriptable obj){
+	yield return FadeObjects(0, 1);
+	holder.SetActive(false);
+	skybox.SetTexture("_Tex",obj.PhotoList[0]);
+	skybox.SetFloat("_Exposure", 0);
+	exitButton.SetActive(true);
+	StoryStarted.Invoke(); 
+	yield return Fade(0,1);
+//	StartCoroutine(CycleThroughPhotoList(obj));
+		cycleRoutine = CycleThroughPhotoList(obj);
+		StartCoroutine(cycleRoutine);
+	}
 
+	private IEnumerator StartExperience(){
 		yield return StartCoroutine(FadeObjects(0, 1));
 		holder.SetActive(false);
 		videoPlayer.Prepare();
@@ -93,14 +118,22 @@ public class AFKManager : MonoBehaviour {
     }
 
     private IEnumerator StopExperience(){
-				StoryStopped.Invoke();
+			StoryStopped.Invoke();
+
+			if(cycleRoutine!=null){
+				Debug.Log("Stopping coroutine");
+				StopCoroutine(cycleRoutine);
+				cycleRoutine = null;
+			}
+
 		if(videoPlayer.isPlaying){
 			videoPlayer.Stop();
 		}
-
 		yield return StartCoroutine(Fade(1,0));
+		skybox.SetTexture("_Tex", videoTexture);
 		circle.SetColor("_Color", new Color(circle.color.r, circle.color.g, circle.color.b, 255));
 		holder.SetActive(true);
+		exitButton.SetActive(false);
 		yield return StartCoroutine(FadeObjects(1, 0));	
 	}
 
@@ -148,6 +181,19 @@ public class AFKManager : MonoBehaviour {
 			col1.a = tempVal;
             circle.SetColor("_Color", col1);
 			yield return null;
+		}
+	}
+
+	private IEnumerator CycleThroughPhotoList(PhotoScriptable obj){
+		int index = 0;
+		while(true){
+		yield return new WaitForSecondsRealtime(photoCycleTime);
+		index +=1;
+		if(index > obj.PhotoList.Count -1)
+		index = 0;
+		yield return  StartCoroutine(Fade(1,0));
+		skybox.SetTexture("_Tex", obj.PhotoList[index]);
+		yield return StartCoroutine(Fade(0,1));
 		}
 	}
 
