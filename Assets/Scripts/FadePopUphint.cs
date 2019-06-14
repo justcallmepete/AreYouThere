@@ -6,12 +6,13 @@ using UnityEngine.UI;
 public class FadePopUphint : MonoBehaviour
 {
 
-   
+    Coroutine co;
 
-    // Update is called once per frame
-    void Update()
+     // Update is called once per frame
+     void Update()
     {
-        if (Input.GetKey(KeyCode.Space)) StartCoroutine(FadeTo(0.0f, 1f));
+        if (Input.GetKey(KeyCode.Space)) co = StartCoroutine(FadeTo(0.0f, 1f));
+        
     }
         
 

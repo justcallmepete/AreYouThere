@@ -37,7 +37,7 @@ public class Gazing : MonoBehaviour
         else
         {
             timer = 4f;
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
             gameObject.GetComponentInChildren<Image>().fillAmount = 0;
         }
 
