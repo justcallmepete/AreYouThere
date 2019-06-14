@@ -8,6 +8,7 @@ public class ProgressManager : MonoBehaviour {
 	//AFKManager AFKManager;
 	// list with stories
 	// string nameOf Person, 
+	public AFKManager afkManager;
 
 	public class VideoFormat{
 		public VideoFormat(double p, double d){
@@ -22,26 +23,25 @@ public class ProgressManager : MonoBehaviour {
 	Dictionary<string, VideoFormat> videoDictionary = new Dictionary<string, VideoFormat>();
 
 	public void startding(){
-		Debug.Log("staartding aangeroepen");
 		AFKManager.StoryStarted += SetCurrentProgress;
 		AFKManager.StoryStopped += SaveCurrentProgress;
 	}
 
 	private void SetCurrentProgress(){
+		if(!afkManager.isVideoShow) return;
 		VideoFormat vid = null;
 		if(videoDictionary.TryGetValue(videoPlayer.clip.ToString(), out vid)){
 			videoPlayer.time = vid.progress;
-			Debug.Log("player is at: " + vid.progress + " seconds again");
 		}
 	}
 
 	private void SaveCurrentProgress(){
+		if(!afkManager.isVideoShow) return;
 		VideoFormat vid = null;
 		if (videoDictionary.TryGetValue(videoPlayer.clip.ToString(), out vid)){
+			if (videoPlayer.time < (videoPlayer.clip.length * .99f))
 			vid.progress = videoPlayer.time;
-			Debug.Log("Time saved at: " + videoPlayer.time);
 		} else {
-			Debug.Log("player is at: " + videoPlayer.time + " seconds");
 			if (videoPlayer.isPlaying && videoPlayer.time < videoPlayer.clip.length)
 			videoDictionary.Add(videoPlayer.clip.ToString(), new VideoFormat(videoPlayer.time , videoPlayer.clip.length));
 			}

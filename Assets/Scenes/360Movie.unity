@@ -367,6 +367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 1438037777}
+  afkManager: {fileID: 1760725321}
 --- !u!1 &166088158
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,12 +1059,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1760725321}
-        m_MethodName: SetVideo
+        m_MethodName: SetPictureShow
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 32900000, guid: 4018bbd86ad128b4d89ffdedc69c7067,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Video.VideoClip, UnityEngine
+          m_ObjectArgument: {fileID: 11400000, guid: 3cdff1158716cbd4f97d214cffa5d55b,
+            type: 2}
+          m_ObjectArgumentAssemblyTypeName: PhotoScriptable, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1728,6 +1729,16 @@ Prefab:
       propertyPath: progressManager
       value: 
       objectReference: {fileID: 132184751}
+    - target: {fileID: 114338347987560686, guid: 8995ea866d09b98409a6b453114f61fa,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114455975802961204, guid: 8995ea866d09b98409a6b453114f61fa,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8995ea866d09b98409a6b453114f61fa, type: 2}
   m_IsPrefabAsset: 0
@@ -1934,7 +1945,7 @@ VideoPlayer:
   m_RenderMode: 2
   m_AspectRatio: 2
   m_DataSource: 0
-  m_PlaybackSpeed: 6.54
+  m_PlaybackSpeed: 5
   m_AudioOutputMode: 2
   m_TargetAudioSources:
   - {fileID: 0}
@@ -2722,7 +2733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1985016574
 Transform:
   m_ObjectHideFlags: 0
