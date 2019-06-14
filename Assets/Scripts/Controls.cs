@@ -108,22 +108,22 @@ namespace ControllerSelection
                 Ray pointer = OVRInputHelpers.GetSelectionRay(activeController, trackingSpace);
                 RaycastHit hit; // Was anything hit?
                                 //Debug.DrawRay(controller.transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white); 
-                if (Physics.Raycast(pointer, out hit, Mathf.Infinity, LayerMask.GetMask("WorldUI")))
+            if (Physics.Raycast(pointer, out hit, Mathf.Infinity, LayerMask.GetMask("WorldUI")))
+            {
+                Debug.Log("RayHit " + hit.transform.gameObject.ToString());
+                controller.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.green);
+                if (hit.transform.GetComponentInChildren<Button>() && OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
                 {
-                    Debug.Log("RayHit " + hit.transform.gameObject.ToString());
-                    controller.GetComponentInChildren<LineRenderer>().material.color = Color.green;
-                    if (hit.transform.GetComponentInChildren<Button>() && OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
                     {
-                        {
-                            Button btn = hit.transform.GetComponentInChildren<Button>();
-                            btn.onClick.Invoke();
-                        }
+                        Button btn = hit.transform.GetComponentInChildren<Button>();
+                        btn.onClick.Invoke();
                     }
-                    else controller.GetComponentInChildren<LineRenderer>().material.color = Color.blue;
-
                 }
+            }
+             else     controller.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.blue);
+
+            }
 
             }
         }
 
-    }
