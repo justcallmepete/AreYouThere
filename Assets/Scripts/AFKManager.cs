@@ -31,6 +31,7 @@ public class AFKManager : MonoBehaviour {
 	public RenderTexture videoTexture;
 
 	IEnumerator cycleRoutine = null;
+	IEnumerator HardResetRoutine = null;
 
 	public float photoCycleTime = 5f;
 
@@ -40,6 +41,10 @@ public class AFKManager : MonoBehaviour {
 	void Awake() {
 		skybox.SetFloat("_Exposure", 1);
 		skybox.SetTexture("_Tex", videoTexture);
+	}
+
+	void Start(){
+	//	HardResetRoutine = HardResetApplication();
 	}
 
 	void OnEnable() {
@@ -87,7 +92,7 @@ public class AFKManager : MonoBehaviour {
 	
 	public void StopAll(){
 		StopAllCoroutines();
-        exitButton.SetActive(false);
+      //  exitButton.SetActive(false);
         StartCoroutine(StopExperience());
 	}
 
@@ -96,7 +101,7 @@ public class AFKManager : MonoBehaviour {
 	holder.SetActive(false);
 	skybox.SetTexture("_Tex",obj.PhotoList[0]);
 	skybox.SetFloat("_Exposure", 0);
-	exitButton.SetActive(true);
+//	exitButton.SetActive(true);
 	StoryStarted.Invoke(); 
 	yield return Fade(0,1);
 //	StartCoroutine(CycleThroughPhotoList(obj));
@@ -113,7 +118,7 @@ public class AFKManager : MonoBehaviour {
 		videoPlayer.Play();
 				StoryStarted.Invoke(); 
 		StartCoroutine(Fade(0,1));
-        exitButton.SetActive(true);
+     //   exitButton.SetActive(true);
 
     }
 
@@ -133,21 +138,21 @@ public class AFKManager : MonoBehaviour {
 		skybox.SetTexture("_Tex", videoTexture);
 		circle.SetColor("_Color", new Color(circle.color.r, circle.color.g, circle.color.b, 255));
 		holder.SetActive(true);
-		exitButton.SetActive(false);
+	//	exitButton.SetActive(false);
 		yield return StartCoroutine(FadeObjects(1, 0));	
 	}
 
 
 	private IEnumerator HardResetApplication(){
-		resetting = true;
+		Debug.Log("resetting everything");
+		//resetting = true;
 		// when taking off the headset wait for (amount_of_seconds)
 		yield return new WaitForSecondsRealtime(waitTime);
-		OnReset.Invoke();
+		PerformReset();
+		//OnReset.Invoke();
 		//videoPlayer.Stop();
 	//	skybox.SetFloat("_Exposure", 1);
 		//circle.SetColor("_Color", new Color(circle.color.r, circle.color.g, circle.color.b, 255));
-		
-		resetting = false;
 	}
 
 	private IEnumerator SoftResetApplication(){
@@ -201,24 +206,49 @@ public class AFKManager : MonoBehaviour {
 	if(firstTimeInMenu){
 		videoPlayer.Play();
 	}
-	if(resetting){
+	if(isVideoShow){
+		videoPlayer.Play();
+	}
+	//if(resetting){
 	Debug.Log("Stopped the reset");
-	StopAllCoroutines();
+	if(HardResetRoutine != null){
+	StopCoroutine(HardResetRoutine);
+	HardResetRoutine = null;
+	}
 	resetting = false;
+	//	}
+	}
+	
+	private void Update() {
+		if(Input.GetKeyDown(KeyCode.T)){
+			HeadsetTakenOff();
+			//StartCoroutine(HardResetRoutine);
 		}
 	}
 
 	private void HeadsetTakenOff(){
-		StartCoroutine(HardResetApplication());
+		if(videoPlayer.isPlaying){
+		videoPlayer.Pause();
+		}
+		resetting = true;
+		HardResetRoutine = HardResetApplication();
+		StartCoroutine(HardResetRoutine);
 	}
 
 	private void PerformReset(){
-		if(videoPlayer.isPlaying)
+						StoryStopped.Invoke();
+		resetting = false;	
 		videoPlayer.Stop();
-
+		StopAllCoroutines();
 		holder.SetActive(false);
 		circle.SetColor("_Color", new Color(circle.color.r, circle.color.g, circle.color.b, 0));
 		skybox.SetFloat("_Exposure", 1);
+		skybox.SetTexture("_Tex", videoTexture);
 		videoTexture.Release();
+		firstTimeInMenu = true;
+				//resetting = false;
+				isVideoShow = false;
+
+		//HeadsetPutOn();
 	}
 }

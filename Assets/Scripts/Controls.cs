@@ -25,10 +25,12 @@ namespace ControllerSelection
         [Tooltip("Maximum raycast distance")] public float raycastDistance = 500;
 
         [HideInInspector] public OVRInput.Controller activeController = OVRInput.Controller.None;
-        private bool isInExperience;
+        public bool isInExperience;
         public AFKManager afkManager;
         private Button currentButton;
         public GameObject controller;
+        public FadePopUphint popUp;
+
         void Awake()
         {
             if (trackingSpace == null)
@@ -67,7 +69,7 @@ namespace ControllerSelection
         {
             activeController = OVRInputHelpers.GetControllerForButton(OVRInput.Button.PrimaryIndexTrigger, activeController);
 
-            if (OVRInput.Get(primaryButton, activeController))
+            if (OVRInput.GetDown(primaryButton, activeController))
             {
                 if (currentButton)
                 {
@@ -75,7 +77,7 @@ namespace ControllerSelection
                 }
             }
 
-            if (OVRInput.Get(secondaryButton, activeController))
+            if (OVRInput.GetDown(secondaryButton, activeController))
             {
                 if (isInExperience)
                 {
@@ -83,11 +85,11 @@ namespace ControllerSelection
                 }
                 else
                 {
-                    gameObject.GetComponentInParent<FadePopUphint>().StartCoroutine("FadeTo(0.0f, 1f)");
+                     popUp.StartCoroutine(popUp.FadeTo(0,1));
                 }
             }
 
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A))
             {
                 Debug.Log("reeeeee");
                 if (isInExperience)
@@ -96,7 +98,7 @@ namespace ControllerSelection
                 }
                 else
                 {
-                    gameObject.GetComponentInParent<FadePopUphint>().StartCoroutine("FadeTo(0.0f, 1f)");
+                    popUp.StartCoroutine(popUp.FadeTo(0,1));
                 }
             }
         }

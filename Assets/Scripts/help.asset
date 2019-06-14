@@ -13,5 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhotoList:
   - {fileID: 2800000, guid: 5ca413cdb67bc1944aeae5b41774b3f3, type: 3}
-  - {fileID: 2800000, guid: e8aba45bbb6598446af349d3592f9f62, type: 3}
+  - {fileID: 2800000, guid: bf4f40a874fad1a4486cf52a0c35f487, type: 3}
   - {fileID: 2800000, guid: 1c847780ef9c3b6408b64dd73af5ece6, type: 3}

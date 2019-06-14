@@ -16,7 +16,7 @@ public class FadePopUphint : MonoBehaviour
     }
         
 
-    IEnumerator FadeTo(float aValue, float aTime)
+    public IEnumerator FadeTo(float aValue, float aTime)
     {
         gameObject.GetComponent<CanvasGroup>().alpha = 1f;
         yield return new WaitForSecondsRealtime(1f);
