@@ -30,7 +30,7 @@ namespace ControllerSelection
         private Button currentButton;
         public GameObject controller;
         public FadePopUphint popUp;
-
+        GameObject cache;
         void Awake()
         {
             if (trackingSpace == null)
@@ -114,6 +114,9 @@ namespace ControllerSelection
             {
                 Debug.Log("RayHit " + hit.transform.gameObject.ToString());
                 controller.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.green);
+                if(cache != hit.transform.gameObject) cache = hit.transform.gameObject;
+                hit.transform.gameObject.GetComponent<SmoothScale>().dirScale = true;
+
                 if (hit.transform.GetComponentInChildren<Button>() && OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
                 {
                     {
@@ -122,8 +125,11 @@ namespace ControllerSelection
                     }
                 }
             }
-             else     controller.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.blue);
-
+            else
+            {
+                controller.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.blue);
+                if(cache != null) cache.transform.gameObject.GetComponent<SmoothScale>().dirScale = false;
+            }
             }
 
             }

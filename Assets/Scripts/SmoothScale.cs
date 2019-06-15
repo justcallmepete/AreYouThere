@@ -14,7 +14,7 @@ public class SmoothScale : MonoBehaviour {
 
     void OnValidate () {
         scale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        scaleGoal = scale * 1.5f;
+        scaleGoal = scale * 1.2f;
         if (player != null) transform.LookAt(player.transform.position);
 	}
 
