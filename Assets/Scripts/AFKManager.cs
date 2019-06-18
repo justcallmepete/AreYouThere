@@ -27,8 +27,9 @@ public class AFKManager : MonoBehaviour {
 	
 	public Material skybox, circle;
 	public GameObject holder;
+    public VideoClip videoClipIntro;
 
-	public RenderTexture videoTexture;
+    public RenderTexture videoTexture;
 
 	IEnumerator cycleRoutine = null;
 	IEnumerator HardResetRoutine = null;
@@ -203,7 +204,9 @@ public class AFKManager : MonoBehaviour {
 	}
 
 	private void HeadsetPutOn(){
+    
 	if(firstTimeInMenu){
+            videoPlayer.clip = videoClipIntro;
 		videoPlayer.Play();
 	}
 	if(isVideoShow){

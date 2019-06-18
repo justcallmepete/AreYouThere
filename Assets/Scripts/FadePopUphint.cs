@@ -21,7 +21,7 @@ public class FadePopUphint : MonoBehaviour
         gameObject.GetComponent<CanvasGroup>().alpha = 1f;
         yield return new WaitForSecondsRealtime(1f);
         float alpha = gameObject.GetComponent<CanvasGroup>().alpha;
-            for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+            for (float t = 0.0f; t < 2f; t += Time.deltaTime / aTime)
             {
                 Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha, aValue, t));
                 gameObject.GetComponent<CanvasGroup>().alpha = newColor.a;
