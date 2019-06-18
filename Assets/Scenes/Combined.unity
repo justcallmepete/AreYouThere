@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.054461084, g: 0.008796291, b: 0.14571151, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -790,7 +790,7 @@ Prefab:
         type: 2}
       propertyPath: videoClipIntro
       value: 
-      objectReference: {fileID: 32900000, guid: 4018bbd86ad128b4d89ffdedc69c7067,
+      objectReference: {fileID: 32900000, guid: 3eae26d6312842c4992bde5d4249dcd5,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8995ea866d09b98409a6b453114f61fa, type: 2}
@@ -1401,8 +1401,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 284.0919, y: 284.09186, z: 105.14}
-  m_Center: {x: 0.00000039944862, y: 12.054918, z: -14.4608135}
+  m_Size: {x: 247.50826, y: 284.09186, z: 105.14001}
+  m_Center: {x: -18.29185, y: 12.05492, z: -14.460776}
 --- !u!1 &726158637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1857,7 +1857,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 7762e584e08b41a499b4a1795398f047, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 43265efd2c6a7c240990087f3e20c1f0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -3095,7 +3095,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.21220452, y: 0.18928835}
   m_AnchorMax: {x: 0.8376318, y: 0.98079723}
-  m_AnchoredPosition: {x: 87, y: -97}
+  m_AnchoredPosition: {x: 87, y: -178}
   m_SizeDelta: {x: 397.4154, y: 355.09216}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1919970579 stripped
