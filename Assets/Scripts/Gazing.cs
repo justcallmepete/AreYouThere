@@ -46,6 +46,8 @@ public class Gazing : MonoBehaviour
     void GazeTimer(RaycastHit hit)
     {
         hit.transform.gameObject.GetComponentInChildren<Button>().onClick.Invoke();
+        Debug.Log("gazing click");
+        Destroy(this);
     }
 }
 

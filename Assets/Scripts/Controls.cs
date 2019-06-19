@@ -15,6 +15,7 @@ namespace ControllerSelection
         [Header("Selection")]
         [Tooltip("Primary selection button")]
         public OVRInput.Button primaryButton = OVRInput.Button.PrimaryIndexTrigger;
+        public OVRInput.Button touchPadButton = OVRInput.Button.PrimaryTouchpad;
 
         [Tooltip("Secondary selection button")]
         public OVRInput.Button secondaryButton = OVRInput.Button.Back;
@@ -69,12 +70,21 @@ namespace ControllerSelection
         {
             activeController = OVRInputHelpers.GetControllerForButton(OVRInput.Button.PrimaryIndexTrigger, activeController);
 
-            if (OVRInput.GetDown(primaryButton, activeController))
+            if (OVRInput.GetDown(primaryButton, activeController) || Input.GetKeyDown(KeyCode.O))
             {
                 if (currentButton)
                 {
                     currentButton.onClick.Invoke();
+                    currentButton = null;
+                    Debug.Log("debugging button press");
+                    return;
                 }
+            }
+
+            if(isInExperience && !afkManager.isVideoShow){
+                    if ( OVRInput.GetDown(primaryButton, activeController) || OVRInput.GetDown(touchPadButton, activeController)){
+                        afkManager.CycleToNextPicture();
+                    }
             }
 
             if (OVRInput.GetDown(secondaryButton, activeController))
@@ -100,6 +110,10 @@ namespace ControllerSelection
                 {
                     popUp.StartCoroutine(popUp.FadeTo(0,1));
                 }
+            }
+
+            if(Input.GetKeyDown(KeyCode.P)){
+                afkManager.CycleToNextPicture();
             }
         }
             private void RaycastFromController()

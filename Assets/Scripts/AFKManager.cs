@@ -18,6 +18,9 @@ public class AFKManager : MonoBehaviour {
 
 	public bool isVideoShow;
 
+	private int currentPhotoIndex = 0;
+	private PhotoScriptable photoObj;
+
 	[SerializeField] float waitTime;
 	public VideoPlayer videoPlayer;	
 	public ProgressManager progressManager;
@@ -25,7 +28,7 @@ public class AFKManager : MonoBehaviour {
 
 	private bool firstTimeInMenu = true;
 	
-	public Material skybox, circle;
+	public Material skybox, photoSkybox, circle, photocircle;
 	public GameObject holder;
     public VideoClip videoClipIntro;
 
@@ -33,13 +36,16 @@ public class AFKManager : MonoBehaviour {
 
 	IEnumerator cycleRoutine = null;
 	IEnumerator HardResetRoutine = null;
+	IEnumerator fadeRoutine;
 
-	public float photoCycleTime = 5f;
+	public float photoCycleTime = 10f;
 
 	public float fadeTime = 2f;
     public float currentAlpha { get; private set; }
 
 	void Awake() {
+		photocircle.SetColor("_Color", new Color(0,0,0,0));
+		RenderSettings.skybox = skybox;
 		skybox.SetFloat("_Exposure", 1);
 		skybox.SetTexture("_Tex", videoTexture);
 	}
@@ -74,6 +80,7 @@ public class AFKManager : MonoBehaviour {
 	}
 
 	public void SetVideo(VideoClip clip){
+		RenderSettings.skybox = skybox;
 		isVideoShow = true;
 		videoPlayer.clip = clip;
 		videoPlayer.Prepare();
@@ -100,11 +107,12 @@ public class AFKManager : MonoBehaviour {
 	private IEnumerator StartPhotoExperience(PhotoScriptable obj){
 	yield return FadeObjects(0, 1);
 	holder.SetActive(false);
-	skybox.SetTexture("_Tex",obj.PhotoList[0]);
-	skybox.SetFloat("_Exposure", 0);
+	RenderSettings.skybox = photoSkybox;
+	RenderSettings.skybox = obj.PhotoList[0];
+	//RenderSettings.skybox.SetColor("_Tint", new Color(0,0,0,0));
 //	exitButton.SetActive(true);
 	StoryStarted.Invoke(); 
-	yield return Fade(0,1);
+	yield return FadePhotoBubble(1,0);
 //	StartCoroutine(CycleThroughPhotoList(obj));
 		cycleRoutine = CycleThroughPhotoList(obj);
 		StartCoroutine(cycleRoutine);
@@ -190,17 +198,35 @@ public class AFKManager : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator CycleThroughPhotoList(PhotoScriptable obj){
-		int index = 0;
-		while(true){
-		yield return new WaitForSecondsRealtime(photoCycleTime);
-		index +=1;
-		if(index > obj.PhotoList.Count -1)
-		index = 0;
-		yield return  StartCoroutine(Fade(1,0));
-		skybox.SetTexture("_Tex", obj.PhotoList[index]);
-		yield return StartCoroutine(Fade(0,1));
+		private IEnumerator FadePhotoBubble(float startAlpha, float endAlpha){
+			float elapsedTime = 0.0f;
+			Color col1 = photocircle.color;
+		while (elapsedTime < fadeTime)
+		{
+			elapsedTime += Time.deltaTime;
+			float tempVal= Mathf.Lerp(startAlpha, endAlpha, Mathf.Clamp01(elapsedTime / fadeTime));
+			col1.a = tempVal;
+            photocircle.SetColor("_Color", col1);
+			yield return null;
 		}
+	}
+
+	private IEnumerator CycleThroughPhotoList(PhotoScriptable obj, int cycleIndex = 0){
+		currentPhotoIndex = cycleIndex;
+		photoObj = obj;
+		do{
+		currentPhotoIndex += 1;
+		Debug.Log("next picture");
+		yield return new WaitForSecondsRealtime(photoCycleTime);
+		
+
+		if(currentPhotoIndex > photoObj.PhotoList.Count -1){
+		currentPhotoIndex = 0;
+		}
+		yield return  StartCoroutine(FadePhotoBubble(0,1));
+		RenderSettings.skybox = obj.PhotoList[currentPhotoIndex];
+		yield return StartCoroutine(FadePhotoBubble(1,0));
+		} while (true);
 	}
 
 	private void HeadsetPutOn(){
@@ -245,6 +271,7 @@ public class AFKManager : MonoBehaviour {
 		StopAllCoroutines();
 		holder.SetActive(false);
 		circle.SetColor("_Color", new Color(circle.color.r, circle.color.g, circle.color.b, 0));
+		RenderSettings.skybox = skybox;
 		skybox.SetFloat("_Exposure", 1);
 		skybox.SetTexture("_Tex", videoTexture);
 		videoTexture.Release();
@@ -253,5 +280,27 @@ public class AFKManager : MonoBehaviour {
 				isVideoShow = false;
 
 		//HeadsetPutOn();
+	}
+
+	public void CycleToNextPicture(){
+		// stop timer coroutine,
+		// cycle to next picture (if last, go to first)
+		// start timer coroutine
+		StopAllCoroutines();
+		StartCoroutine(ManuallyCycleThroughSlideshow());
+	}
+
+	private IEnumerator ManuallyCycleThroughSlideshow(){
+		if(photoObj == null) yield return null;
+		yield return  StartCoroutine(FadePhotoBubble(0,1));
+		if(currentPhotoIndex+1 > photoObj.PhotoList.Count-1){
+			currentPhotoIndex = 0;
+		} else {
+			currentPhotoIndex++;
+		}
+		RenderSettings.skybox = photoObj.PhotoList[currentPhotoIndex];
+		yield return StartCoroutine(FadePhotoBubble(1,0));
+		cycleRoutine = CycleThroughPhotoList(photoObj, currentPhotoIndex);
+		StartCoroutine(cycleRoutine);
 	}
 }

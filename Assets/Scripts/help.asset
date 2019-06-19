@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Name: help
   m_EditorClassIdentifier: 
   PhotoList:
-  - {fileID: 2800000, guid: 4a0a9371d2ed4c74b90d00b1c124f27c, type: 3}
-  - {fileID: 2800000, guid: db04cddcb5b91f34da45740e35775314, type: 3}
-  - {fileID: 2800000, guid: 44649bc984a3cd240a7dc2ae8ed6973e, type: 3}
-  - {fileID: 2800000, guid: 5b1911f4832dd54449340af7a066cc7f, type: 3}
-  - {fileID: 2800000, guid: cfab69117ecffb6449acb290bf1d18c6, type: 3}
+  - {fileID: 2100000, guid: 30bb18b0613a80148afd06cd65da1149, type: 2}
+  - {fileID: 2100000, guid: fac337bb15e65c043bbc45715fedf67b, type: 2}
+  - {fileID: 2100000, guid: 4de72757c5157d340823841cc85608ab, type: 2}
+  - {fileID: 2100000, guid: a76f02cefb954e44aa0954d21fe1d27e, type: 2}
+  - {fileID: 2100000, guid: 150b624cf2c81ae428e6633c989dddfc, type: 2}

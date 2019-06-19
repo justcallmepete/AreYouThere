@@ -6,5 +6,5 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "PhotoScriptable", menuName = "Inventory/List")]
 public class PhotoScriptable : ScriptableObject {
 
-public List<Texture> PhotoList = new List<Texture>();
+public List<Material> PhotoList = new List<Material>();
 }
